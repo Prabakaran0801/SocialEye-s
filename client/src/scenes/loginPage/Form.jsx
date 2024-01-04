@@ -67,11 +67,6 @@ const Form = () => {
       "https://social-eyes.vercel.app/register",
       {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
         body: formData,
       }
     );
@@ -88,11 +83,7 @@ const Form = () => {
       "https://social-eyes.vercel.app/login",
       {
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       }
     );
