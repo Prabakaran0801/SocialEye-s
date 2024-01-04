@@ -17,7 +17,7 @@
                 "DELETE"
             ],
             "headers": {
-                "Access-Control-Allow-Origin": "https://your-client-domain.com",
+                "Access-Control-Allow-Origin": "https: //social-eyes-client.vercel.app",
                 "Access-Control-Allow-Methods": "GET,OPTIONS,POST,PUT,DELETE",
                 "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
                 "Access-Control-Allow-Credentials": true
