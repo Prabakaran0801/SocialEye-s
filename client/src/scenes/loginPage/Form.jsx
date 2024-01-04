@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
+import { axios } from "axios";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -79,10 +80,10 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch(
+    const loggedInResponse = await axios.post(
       "https://social-eyes.vercel.app/login",
+      { withCredentials: true },
       {
-        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       }
