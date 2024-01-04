@@ -11,14 +11,11 @@
             "src": "/(.*)",
             "methods": [
                 "GET",
-                "OPTIONS",
-                "POST",
-                "PUT",
-                "DELETE"
+                "POST"
             ],
             "headers": {
                 "Access-Control-Allow-Origin": "https://social-eyes-client.vercel.app",
-                "Access-Control-Allow-Methods": "GET,OPTIONS,POST,PUT,DELETE",
+                "Access-Control-Allow-Methods": "GET,POST",
                 "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
                 "Access-Control-Allow-Credentials": true
             }
