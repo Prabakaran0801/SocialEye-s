@@ -31,7 +31,7 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(
   cors({
-    origin: ["https://social-eyes-35kf-oxrdwp5fh-prabakaran0801.vercel.app"],
+    origin: ["https://social-eyes-client.vercel.app/"],
     methods: ["POST", "GET", "OPTIONS"],
     credentials: true,
   })
