@@ -8,8 +8,11 @@
     ],
     "routes": [
         {
-            "src": "/(.*)",
-            "dest": "/"
+            "src": "/login",
+            "dest": "https://social-eyes.vercel.app/login",
+            "methods": [
+                "POST"
+            ]
         }
     ]
 }
