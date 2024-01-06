@@ -15,7 +15,6 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
-import axios from "axios";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -57,56 +56,47 @@ const Form = () => {
   const isRegister = pageType === "register";
 
   const register = async (values, onSubmitProps) => {
+    // this allows us to send form info with image
     const formData = new FormData();
     for (let value in values) {
       formData.append(value, values[value]);
     }
     formData.append("picturePath", values.picture.name);
 
-    try {
-      const savedUserResponse = await axios.post(
-        `http://localhost:3001/auth/login`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      const savedUser = savedUserResponse.data;
-      onSubmitProps.resetForm();
-
-      if (savedUser) {
-        setPageType("login");
+    const savedUserResponse = await fetch(
+      `http://localhost:3001/auth/register`,
+      {
+        method: "POST",
+        body: formData,
       }
-    } catch (error) {
-      console.error("Error while registering:", error);
-      // Handle the error as needed
+    );
+    const savedUser = await savedUserResponse.json();
+    onSubmitProps.resetForm();
+
+    if (savedUser) {
+      setPageType("login");
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    try {
-      const loggedInResponse = await axios.post(
-        `http://localhost:3001/auth/login`,
-        values
+    const loggedInResponse = await fetch(`http://localhost:3001/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+    const loggedIn = await loggedInResponse.json();
+    onSubmitProps.resetForm();
+    if (loggedIn) {
+      dispatch(
+        setLogin({
+          user: loggedIn.user,
+          token: loggedIn.token,
+        })
       );
-      const loggedIn = loggedInResponse.data;
-      onSubmitProps.resetForm();
-      if (loggedIn) {
-        dispatch(
-          setLogin({
-            user: loggedIn.user,
-            token: loggedIn.token,
-          })
-        );
-        navigate("/home");
-      }
-    } catch (error) {
-      console.error("Error while logging in:", error);
-      // Handle the error as needed
+      navigate("/home");
     }
   };
+
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
     if (isRegister) await register(values, onSubmitProps);
