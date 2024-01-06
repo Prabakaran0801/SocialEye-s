@@ -65,7 +65,7 @@ const Form = () => {
 
     try {
       const savedUserResponse = await axios.post(
-        `${window.location.origin}/auth/register`,
+        `http://localhost:3001/auth/login`,
         formData,
         {
           headers: {
@@ -88,7 +88,7 @@ const Form = () => {
   const login = async (values, onSubmitProps) => {
     try {
       const loggedInResponse = await axios.post(
-        `${window.location.origin}/auth/login`,
+        `http://localhost:3001/auth/login`,
         values
       );
       const loggedIn = loggedInResponse.data;
