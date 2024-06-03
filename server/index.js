@@ -24,37 +24,8 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-
-// Use CORS middleware
-app.use(
-  cors({
-    origin: "http://localhost:3000", // Replace with your frontend URL
-    credentials: true,
-  })
-);
-
-// Use Helmet middleware with CSP configuration
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'", "http://localhost:3001"],
-        scriptSrc: [
-          "'self'",
-          "'unsafe-inline'",
-          "'unsafe-eval'",
-          "http://localhost:3001",
-        ],
-        // Add more directives as needed based on your requirements
-      },
-    },
-  })
-);
-
-app.use(express.static(path.resolve(__dirname, "client", "build")));
-
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
-
+app.use(cors());
 /* FILE STORAGE */
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
