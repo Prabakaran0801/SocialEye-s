@@ -18,15 +18,34 @@ import { verifyToken } from "./middleware/auth.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
-
 const app = express();
+
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; connect-src 'self' http://localhost:3000"
+  );
+  next();
+});
 
 app.use(express.json());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use("/assets", express.static(path.join(__dirname, "public/assets")));
 app.use(cors());
-/* FILE STORAGE */
+app.use(helmet());
+app.use(morgan("common"));
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "..", "client", "build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
+});
+
+// Other routes
+app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+
+// File storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "public/assets");
@@ -37,18 +56,17 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-/* ROUTES WITH FILES */
+// Routes with files
 app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
-/* ROUTES */
-// app.get("/api/login", login);
+// API routes
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
 
-/* MONGOOSE SETUP */
-const PORT = process.env.PORT || 10000;
+// Mongoose setup
+const PORT = process.env.PORT || 3000;
 mongoose.set("strictQuery", false);
 mongoose
   .connect(process.env.MONGO_URL, {
@@ -56,11 +74,6 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    // mongoose.set("strictQuery", false);
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
-
-    /* ADD DATA ONE TIME */
-    // User.insertMany(users);
-    // Post.insertMany(posts);
   })
   .catch((error) => console.log(`${error} did not connect`));
