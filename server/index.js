@@ -20,18 +20,52 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const app = express();
 
+// Use helmet middleware to set Content Security Policy header
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "connect-src": ["'self'", "http://localhost:3000"],
+        "style-src": ["'self'", "https://fonts.googleapis.com"],
+      },
+    },
+  })
+);
+
+// Remove the custom middleware function for setting CSP header
+// app.use((req, res, next) => {
+//   res.setHeader(
+//     "Content-Security-Policy",
+//     "default-src 'self'; connect-src http://localhost:3000;"
+//   );
+//   next();
+// });
+
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; connect-src 'self' http://localhost:3000"
+    "default-src 'self'; style-src 'self' https://fonts.googleapis.com"
   );
   next();
 });
-
+// Set CSP header middleware
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; connect-src http://localhost:3000;"
+  );
+  next();
+});
 app.use(express.json());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true, // If you're using cookies or sessions
+  })
+);
 app.use(helmet());
 app.use(morgan("common"));
 
