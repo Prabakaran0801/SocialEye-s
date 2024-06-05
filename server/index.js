@@ -21,17 +21,17 @@ dotenv.config();
 const app = express();
 
 // Use helmet middleware to set Content Security Policy header
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        "connect-src": ["'self'", "http://localhost:3000"],
-        "style-src": ["'self'", "https://fonts.googleapis.com"],
-      },
-    },
-  })
-);
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+//         "connect-src": ["'self'", "http://localhost:3000"],
+//         "style-src": ["'self'", "https://fonts.googleapis.com"],
+//       },
+//     },
+//   })
+// );
 
 // Remove the custom middleware function for setting CSP header
 // app.use((req, res, next) => {
@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 });
 // Set CSP header middleware
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3006");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
@@ -61,7 +61,7 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "http://localhost:3006",
     credentials: true, // If you're using cookies or sessions
   })
 );
