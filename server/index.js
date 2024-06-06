@@ -156,7 +156,7 @@ const app = express();
 const corsOptions = {
   origin: [
     "http://localhost:3006",
-    "https://social-eyes-e582-e0z26htwe-prabakaran0801s-projects.vercel.app",
+    "https://social-eyes-e582-98byzvvan-prabakaran0801s-projects.vercel.app",
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
@@ -165,6 +165,9 @@ const corsOptions = {
 
 // Apply CORS middleware
 app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options("*", cors(corsOptions));
 
 // Set CSP header middleware
 app.use((req, res, next) => {
@@ -210,6 +213,16 @@ app.post("/posts", verifyToken, upload.single("picture"), createPost);
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
+
+// Error handling middleware
+app.use((req, res, next) => {
+  res.status(404).json({ message: "Not Found" });
+});
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: "Internal Server Error" });
+});
 
 // Mongoose setup
 const PORT = process.env.PORT || 3000;
