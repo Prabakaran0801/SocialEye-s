@@ -156,6 +156,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3006",
   "https://social-eyes-e582-98byzvvan-prabakaran0801s-projects.vercel.app",
+  "https://social-eyes-e582.vercel.app",
 ];
 
 const corsOptions = {
@@ -171,6 +172,7 @@ const corsOptions = {
   optionsSuccessStatus: 204,
 };
 
+// Apply CORS middleware
 app.use(cors(corsOptions));
 
 // Handle preflight requests
