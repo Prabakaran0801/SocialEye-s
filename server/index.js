@@ -156,6 +156,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:3006",
   "https://social-eyes-e582-98byzvvan-prabakaran0801s-projects.vercel.app",
+  "https://social-eyes-e582.vercel.app",
 ];
 
 const corsOptions = {
@@ -170,26 +171,28 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 204,
 };
-app.use(cors(corsOptions));
-// Set CSP header middleware
-app.use((req, res, next) => {
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://social-eyes-e582-98byzvvan-prabakaran0801s-projects.vercel.app"
-  );
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
-// Set security headers
-app.use(helmet());
-app.use(morgan("common"));
+// Handle preflight requests
+app.options("*", cors(corsOptions));
+
+// Set CSP header middleware
+app.use((req, res, next) => {
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'self'; style-src 'self' https://fonts.googleapis.com"
+  );
+  next();
+});
+
+// Middleware setup
 app.use(express.json());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(helmet());
+app.use(morgan("common"));
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "..", "client", "build")));
