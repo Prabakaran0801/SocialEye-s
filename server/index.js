@@ -153,11 +153,19 @@ dotenv.config();
 const app = express();
 
 // Configure CORS options
+const allowedOrigins = [
+  "http://localhost:3006",
+  "https://social-eyes-e582-98byzvvan-prabakaran0801s-projects.vercel.app",
+];
+
 const corsOptions = {
-  origin: [
-    "http://localhost:3006",
-    "https://social-eyes-e582-98byzvvan-prabakaran0801s-projects.vercel.app",
-  ],
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
@@ -166,23 +174,12 @@ const corsOptions = {
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
-// Handle preflight requests
-app.options("*", cors(corsOptions));
-
-// Set CSP header middleware
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; style-src 'self' https://fonts.googleapis.com"
-  );
-  next();
-});
-
+// Set security headers
+app.use(helmet());
+app.use(morgan("common"));
 app.use(express.json());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(helmet());
-app.use(morgan("common"));
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "..", "client", "build")));
