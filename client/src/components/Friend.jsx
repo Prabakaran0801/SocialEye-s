@@ -23,7 +23,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const patchFriend = async () => {
     const response = await fetch(
-      `https://socialeyes-fnee.onrender.com/users/${_id}/${friendId}`,
+      `https://socialeyes-opfn.onrender.com/users/${_id}/${friendId}`,
       {
         method: "PATCH",
         headers: {

@@ -36,7 +36,7 @@ const PostWidget = ({
 
   const patchLike = async () => {
     const response = await fetch(
-      `https://socialeyes-fnee.onrender.com/posts/${postId}/like`,
+      `https://socialeyes-opfn.onrender.com/posts/${postId}/like`,
       {
         method: "PATCH",
         headers: {

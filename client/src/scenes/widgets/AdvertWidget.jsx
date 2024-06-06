@@ -20,7 +20,7 @@ const AdvertWidget = () => {
         width="100%"
         height="auto"
         alt="advert"
-        src="https://socialeyes-fnee.onrender.com/assets/Internet-Vector-Illustration.jpg"
+        src="https://socialeyes-opfn.onrender.com/assets/Internet-Vector-Illustration.jpg"
         style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
       />
       <FlexBetween>
