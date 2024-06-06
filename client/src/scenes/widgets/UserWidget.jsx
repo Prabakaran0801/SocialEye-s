@@ -23,7 +23,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
   const getUser = async () => {
     const response = await fetch(
-      `https://socialeyes-fnee.onrender.com/users/${userId}`,
+      `https://socialeyes-opfn.onrender.com/users/${userId}`,
       {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },

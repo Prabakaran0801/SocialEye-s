@@ -80,7 +80,7 @@ const Form = () => {
 
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch(
-      `https://socialeyes-fnee.onrender.com/auth/login`,
+      `https://socialeyes-opfn.onrender.com/auth/login`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
