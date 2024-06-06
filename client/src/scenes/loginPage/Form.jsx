@@ -64,10 +64,11 @@ const Form = () => {
     formData.append("picturePath", values.picture.name);
 
     const savedUserResponse = await fetch(
-      `https://socialeyes-fnee.onrender.com/auth/register`,
+      `https://socialeyes-opfn.onrender.com/auth/register`,
       {
         method: "POST",
         body: formData,
+        credentials: "include",
       }
     );
     const savedUser = await savedUserResponse.json();
@@ -85,6 +86,7 @@ const Form = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
+        credentials: "include",
       }
     );
     const loggedIn = await loggedInResponse.json();
