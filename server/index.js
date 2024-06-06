@@ -146,11 +146,12 @@ import postRoutes from "./routes/posts.js";
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
+// import { users, posts } from "./data/index.js";
 
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config();
-const app = express();
 
 // Configure CORS options
 const allowedOrigins = [
@@ -192,6 +193,7 @@ app.use(express.json());
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(helmet());
+app.use(cors());
 app.use(morgan("common"));
 
 // Serve static files from the React app
@@ -202,7 +204,7 @@ app.get("*", (req, res) => {
 });
 
 // Other routes
-app.use("/assets", express.static(path.join(__dirname, "/public/assets")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // File storage
 const storage = multer.diskStorage({
@@ -244,5 +246,8 @@ mongoose
   })
   .then(() => {
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+    /* ADD DATA ONE TIME */
+    // users.insertMany(users);
+    // posts.insertMany(posts);
   })
   .catch((error) => console.log(`${error} did not connect`));
