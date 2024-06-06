@@ -170,7 +170,17 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 204,
 };
-
+app.use(cors(corsOptions));
+// Set CSP header middleware
+app.use((req, res, next) => {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://social-eyes-e582-98byzvvan-prabakaran0801s-projects.vercel.app"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
 // Apply CORS middleware
 app.use(cors(corsOptions));
 
